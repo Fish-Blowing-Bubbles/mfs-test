@@ -1,0 +1,2 @@
+# Medienfuehrerschein_KI_Fragebogen
+Custom Implementierung des Web-basierten Medienführerschein KI Fragebogens

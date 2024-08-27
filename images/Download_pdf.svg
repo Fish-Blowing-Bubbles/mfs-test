@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 199.89 199.89">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #86c2eb;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4 {
+        stroke: #1a2e44;
+      }
+
+      .cls-1, .cls-2, .cls-4 {
+        stroke-width: 6px;
+      }
+
+      .cls-2 {
+        fill: #e94190;
+      }
+
+      .cls-2, .cls-3 {
+        stroke-miterlimit: 10;
+      }
+
+      .cls-3 {
+        stroke-width: 4px;
+      }
+
+      .cls-3, .cls-4 {
+        fill: #d897c3;
+      }
+
+      .cls-4 {
+        stroke-linejoin: bevel;
+      }
+    </style>
+  </defs>
+  <g id="Layer_9" data-name="Layer 9">
+    <g>
+      <circle class="cls-3" cx="99.95" cy="99.95" r="97.95"/>
+      <g>
+        <path class="cls-2" d="M94.93,35.15h-22.31c-8.28,0-15,6.72-15,15v84.89c0,8.28,6.72,15,15,15h54.65c8.28,0,15-6.72,15-15v-52.55l-47.34-47.34Z"/>
+        <path class="cls-4" d="M95.89,36.11v28.48c0,9.89,8.02,17.9,17.9,17.9h28.48l-46.38-46.38Z"/>
+        <polyline class="cls-1" points="114.62 102.13 114.62 131.43 126.13 131.42 99.88 164.74 73.76 131.21 85.29 131.21 85.13 102.13"/>
+      </g>
+    </g>
+  </g>
+</svg>

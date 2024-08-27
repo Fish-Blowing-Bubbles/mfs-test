@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medienführerschein Fragebogen</title>
+
+    <!--External code-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/pdf-lib"></script> <!--https://pdf-lib.js.org/ - library to edit PDFs-->
+    <script src="https://unpkg.com/@pdf-lib/fontkit/dist/fontkit.umd.js"></script> <!--fontkit, required for custom fonts in PDFs-->
+
+    <!--Custom code-->
+    <link rel="stylesheet" href="src/styles.css">
+    <script src="src/main.js""></script>
+    <script src="src/export_pdf.js"></script>
+
+    <!--Font import-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+
+  </head>
+  <body>
+    <div id="global_wrapper" class="global-height">
+      <div id="content_container" class="content-container">
+        <div id="content_section" class="center-column-container">
+          <!--Progress bar-->
+          <div id="progress_bar" class="progress-bar-container hidden">
+            <div class="progress-bar-outside">
+              <div id="progress_bar_inside" class="progress-bar-inside" style="width: 0%;"></div>
+            </div>
+          </div>
+
+          <div id="top_spacer_start" class="question-top-spacer-start"></div>
+          <div id="top_spacer" class="question-top-spacer hidden"></div>
+
+          <!--Start screen-->
+          <div id="start" class="start-container">
+            <div class="title">
+              <div class="oswald-medium title-text">Selbsttest KI</div>
+            </div>
+
+            <div class="large-button" onclick="start()">
+              <div class="oswald-medium large-button-text">Start</div>
+            </div>
+
+            <div class="start-image-container">
+              <img class="start-image" src="images/start_illustration.png" alt="">
+            </div>
+          </div>
+
+
+
+          <!-- ################### QUESTIONS ################### -->
+
+
+          <!--Question 00 /orginal Question 7 / Likard-->
+          <div id="q0" class="question-container hidden">
+            <div class="oswald-medium question-text question-index">
+              Frage 1:
+            </div>
+            <div class="question-element question-heading">
+              <div class="oswald-medium question-text center-text">
+                Wie hilfreich finde ich KI-Assistenz in meinem Alltag? (z. B. Sprachassistenz, 
+                personalisierte Playlists und Shopping-Vorschläge, Fahr- und Parkassistenz, …)
+              </div>
+            </div>
+            <div class="question-answers-container">
+              <div class="likard-scale-container">
+                <div class="likard-scale">
+                  <div id="q0_a0" class="likard-bubble-container" onclick="selectAnswer(this, 'likard')">
+                    <div class="likard-bubble"></div>
+                    <div class="oswald-medium question-text likard-text">sehr hilfreich</div>
+                  </div>
+                  <div id="q0_a1" class="likard-bubble-container" onclick="selectAnswer(this, 'likard')">
+                    <div class="likard-bubble"></div>
+                    <div class="oswald-medium question-text likard-text">hilfreich</div>
+                  </div>
+                  <div id="q0_a2" class="likard-bubble-container" onclick="selectAnswer(this, 'likard')">
+                    <div class="likard-bubble"></div>
+                    <div class="oswald-medium question-text likard-text">wenig hilfreich</div>
+                  </div>
+                  <div id="q0_a3" class="likard-bubble-container" onclick="selectAnswer(this, 'likard')">
+                    <div class="likard-bubble"></div>
+                    <div class="oswald-medium question-text likard-text">nicht hilfreich</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!--Question 01 /orginal Question 2 /pop-up explanation-->
+          <div id="q1" class="question-container hidden">
+            <div class="oswald-medium question-text question-index">
+              Frage 2:
+            </div>
+            <div class="question-element question-heading">
+              <div class="oswald-medium question-text center-text">
+                Wo steckt überall KI drin?
+              </div>
+            </div>
+            <div class="question-answers-container">
+              <div id="q1_a0" class="question-element question-answer" onclick="selectAnswer(this)">
+                <div class="oswald-medium question-text">Suchmaschienen</div>
+              </div>
+              <div id="q1_a1" class="question-element question-answer" onclick="selectAnswer(this)">
+                <div class="oswald-medium question-text">Lebensmittelproduktion</div>
+              </div>
+              <div id="q1_a2" class="question-element question-answer" onclick="selectAnswer(this)">
+                <div class="oswald-medium question-text">Sprachassistenten</div>
+              </div>
+              <div id="q1_a3" class="question-element question-answer" onclick="selectAnswer(this)">
+                <div class="oswald-medium question-text">Fahrassistenten</div>
+              </div>
+            </div>
+          </div>
+
+          <!--Question 02 / orginal Question 9 / Yes/Now and fill text box -->
+          <div id="q2" class="question-container hidden">
+            <div class="oswald-medium question-text question-index">
+              Frage 3:
+            </div>
+            <div class="question-element question-heading">
+              <div class="oswald-medium question-text center-text">
+                Bin ich schonmal in Kontakt mit Deepfake gekommen?
+              </div>
+            </div>
+            <div class="question-answers-container">
+              <div id="q2_a0" class="question-element question-answer" onclick="selectAnswer(this, 'multi')">
+                <div class="oswald-medium question-text">Ja</div>
+              </div>
+              <div id="q2_a1" class="question-element question-answer" onclick="selectAnswer(this, 'multi')">
+                <div class="oswald-medium question-text">Nein</div>
+              </div> 
+              <div class="text-answer-container">
+                <textarea 
+                  name="q2-text-field" 
+                  id="q2_a" 
+                  class="oswald-medium question-text text-answer question-answer" 
+                  placeholder="Wo und welche?" 
+                  maxlength="500" 
+                  oninput="updateTextBox(this, 'multi')"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+          <!-- Hier gibt es "Ja" und "Nein" als Antwort und eine Texteingabe mit 500 - 1000 Zeichen-->
+
+          <!--Question 03 /orginal Question 2 /pop-up explanation-->
+          <div id="q3" class="question-container hidden">
+            <div class="oswald-medium question-text question-index">
+              Frage 4:
+            </div>
+            <div class="question-element question-heading">
+              <div class="oswald-medium question-text center-text">
+                Kann KI kreativ sein?
+              </div>
+            </div>
+            <div class="question-answers-container">
+              <div id="q3_a0" class="question-element question-answer" onclick="selectAnswer(this)">
+                <div class="oswald-medium question-text">Ja</div>
+              </div>
+              <div id="q3_a1" class="question-element question-answer" onclick="selectAnswer(this)">
+                <div class="oswald-medium question-text">Nein</div>
+              </div>
+            </div>
+          </div>
+
+          <!--Question 04 /orginal Question 6 / Likard-->
+          <div id="q4" class="question-container hidden">
+            <div class="oswald-medium question-text question-index">
+              Frage 5:
+            </div>
+            <div class="question-element question-heading">
+              <div class="oswald-medium question-text center-text">
+                Wie häufig nutze ich KI in meinem Alltag?
+              </div>
+            </div>
+            <div class="question-answers-container">
+              <div class="likard-scale-container">
+                <div class="likard-scale">
+                  <div id="q4_a0" class="likard-bubble-container" onclick="selectAnswer(this, 'likard')">
+                    <div class="likard-bubble"></div>
+                    <div class="oswald-medium question-text likard-text">häufig</div>
+                  </div>
+                  <div id="q4_a1" class="likard-bubble-container" onclick="selectAnswer(this, 'likard')">
+                    <div class="likard-bubble"></div>
+                    <div class="oswald-medium question-text likard-text">manchmal</div>
+                  </div>
+                  <div id="q4_a2" class="likard-bubble-container" onclick="selectAnswer(this, 'likard')">
+                    <div class="likard-bubble"></div>
+                    <div class="oswald-medium question-text likard-text">selten</div>
+                  </div>
+                  <div id="q4_a3" class="likard-bubble-container" onclick="selectAnswer(this, 'likard')">
+                    <div class="likard-bubble"></div>
+                    <div class="oswald-medium question-text likard-text">nie</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!--Question 05 /orginal Question 14 / Textbox-->
+          <div id="q5" class="question-container hidden">
+            <div class="oswald-medium question-text question-index">
+              Frage 6:
+            </div>
+            <div class="question-element question-heading">
+              <div class="oswald-medium question-text center-text">
+                Wie und wo könnte der Einsatz von KI in Zukunft meine Arbeit als 
+                Erzieherin / Erzieher erleichtern?
+              </div>
+            </div>
+            <div class="text-answer-container">
+              <textarea 
+                name="q5-text-field" 
+                id="q5_a" 
+                class="oswald-medium question-text text-answer question-answer" 
+                placeholder="Schreibe deine Antwort..." 
+                maxlength="500" 
+                oninput="updateTextBox(this)"
+              ></textarea>
+            </div>
+          </div>
+
+          <!--Question 06 /orginal Question 1 /multiple choice / pop-up explanation-->
+          <div id="q6" class="question-container hidden">
+            <div class="oswald-medium question-text question-index">
+              Frage 7:
+            </div>
+            <div class="question-element question-heading">
+              <div class="oswald-medium question-text center-text">
+                In welchem Jahrzehnt wurde der erste Chat-Bot entwickelt?
+              </div>
+            </div>
+            <div class="question-answers-container">
+              <div id="q6_a0" class="question-element question-answer" onclick="selectAnswer(this)">
+                <div class="oswald-medium question-text">1960er Jahre</div>
+              </div>
+              <div id="q6_a1" class="question-element question-answer" onclick="selectAnswer(this)">
+                <div class="oswald-medium question-text">1980er Jahre</div>
+              </div>
+              <div id="q6_a2" class="question-element question-answer" onclick="selectAnswer(this)">
+                <div class="oswald-medium question-text">2000er Jahre</div>
+              </div>
+              <div id="q6_a3" class="question-element question-answer" onclick="selectAnswer(this)">
+                <div class="oswald-medium question-text">2020er Jahre</div>
+              </div>
+            </div>
+          </div>
+
+          <!--Question 07 /orginal Question 10 / Likard-->
+          <div id="q7" class="question-container hidden">
+            <div class="oswald-medium question-text question-index">
+              Frage 8:
+            </div>
+            <div class="question-element question-heading">
+              <div class="oswald-medium question-text center-text">
+                Wie wahrscheinlich ist es, dass KI zukunftsnah Entscheidungen 
+                treffen kann, die ansonsten menschliche Eigenschaften wie z. B. 
+                Empathie oder Moral erfordern?
+              </div>
+            </div>
+            <div class="question-answers-container">
+              <div class="likard-scale-container">
+                <div class="likard-scale">
+                  <div id="q7_a0" class="likard-bubble-container" onclick="selectAnswer(this, 'likard')">
+                    <div class="likard-bubble"></div>
+                    <div class="oswald-medium question-text likard-text">sehr wahrscheinlich</div>
+                  </div>
+                  <div id="q7_a1" class="likard-bubble-container" onclick="selectAnswer(this, 'likard')">
+                    <div class="likard-bubble"></div>
+                    <div class="oswald-medium question-text likard-text">wahrscheinlich</div>
+                  </div>
+                  <div id="q7_a2" class="likard-bubble-container" onclick="selectAnswer(this, 'likard')">
+                    <div class="likard-bubble"></div>
+                    <div class="oswald-medium question-text likard-text">unwahrscheinlich</div>
+                  </div>
+                  <div id="q7_a3" class="likard-bubble-container" onclick="selectAnswer(this, 'likard')">
+                    <div class="likard-bubble"></div>
+                    <div class="oswald-medium question-text likard-text">unmöglich</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!--Question 08 /orginal Question 8 / Likard-->
+          <div id="q8" class="question-container hidden">
+            <div class="oswald-medium question-text question-index">
+              Frage 9:
+            </div>
+            <div class="question-element question-heading">
+              <div class="oswald-medium question-text center-text">
+                Wie leicht fällt es mir, KI-generierte Inhalte zu erkennen?
+              </div>
+            </div>
+            <div class="question-answers-container">
+              <div class="likard-scale-container">
+                <div class="likard-scale">
+                  <div id="q8_a0" class="likard-bubble-container" onclick="selectAnswer(this, 'likard')">
+                    <div class="likard-bubble"></div>
+                    <div class="oswald-medium question-text likard-text">sehr leicht</div>
+                  </div>
+                  <div id="q8_a1" class="likard-bubble-container" onclick="selectAnswer(this, 'likard')">
+                    <div class="likard-bubble"></div>
+                    <div class="oswald-medium question-text likard-text">leicht</div>
+                  </div>
+                  <div id="q8_a2" class="likard-bubble-container" onclick="selectAnswer(this, 'likard')">
+                    <div class="likard-bubble"></div>
+                    <div class="oswald-medium question-text likard-text">geht so</div>
+                  </div>
+                  <div id="q8_a3" class="likard-bubble-container" onclick="selectAnswer(this, 'likard')">
+                    <div class="likard-bubble"></div>
+                    <div class="oswald-medium question-text likard-text">schwer</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!--Question 09 /orginal Question 3 /pop-up explanation-->
+          <div id="q9" class="question-container hidden">
+            <div class="oswald-medium question-text question-index">
+              Frage 10:
+            </div>
+            <div class="question-element question-heading">
+              <div class="oswald-medium question-text center-text">
+                Könnten KI-Chat-Bots das bayerische Abitur bestehen?
+              </div>
+            </div>
+            <div class="question-answers-container">
+              <div id="q9_a0" class="question-element question-answer" onclick="selectAnswer(this)">
+                <div class="oswald-medium question-text">Ja</div>
+              </div>
+              <div id="q9_a1" class="question-element question-answer" onclick="selectAnswer(this)">
+                <div class="oswald-medium question-text">Nein</div>
+              </div>
+            </div>
+          </div>
+
+          <!--Question 10 / Answer box-->
+          <div id="q10" class="question-container hidden">
+            <div class="oswald-medium question-text question-index">
+              Frage 11:
+            </div>
+            <div class="question-element question-heading">
+              <div class="oswald-medium question-text center-text">
+                Wo begegnet mir KI in meinem persönlichen Alltag? / Welche 
+                KI-Technologien nutze ich aktiv und bewusst?
+              </div>
+            </div>
+            <div class="text-answer-container">
+              <textarea 
+                name="q10-text-field" 
+                id="q10_a" 
+                class="oswald-medium question-text text-answer question-answer" 
+                placeholder="Schreibe deine Antwort..." 
+                maxlength="500" 
+                oninput="updateTextBox(this)"
+              ></textarea>
+            </div>
+          </div>
+
+          <!--Question 11 / Answer box-->
+          <div id="q11" class="question-container hidden">
+            <div class="oswald-medium question-text question-index">
+              Frage 12:
+            </div>
+            <div class="question-element question-heading">
+              <div class="oswald-medium question-text center-text">
+                Gibt es Entwicklungen im Bereich von KI-Technologien, 
+                denen ich eher skeptisch gegenüberstehe?
+              </div>
+            </div>
+            <div class="text-answer-container">
+              <textarea 
+                name="q11-text-field" 
+                id="q11_a" 
+                class="oswald-medium question-text text-answer question-answer" 
+                placeholder="Schreibe deine Antwort..." 
+                maxlength="500" 
+                oninput="updateTextBox(this)"
+              ></textarea>
+            </div>
+          </div>
+
+          <!--Question 12 /orginal Question 4 /pop-up explanation-->
+          <div id="q12" class="question-container hidden">
+            <div class="oswald-medium question-text question-index">
+              Frage 13:
+            </div>
+            <div class="question-element question-heading">
+              <div class="oswald-medium question-text center-text">
+                Was misst der Turing-Test?
+              </div>
+            </div>
+            <div class="question-answers-container">
+              <div id="q12_a0" class="question-element question-answer" onclick="selectAnswer(this)">
+                <div class="oswald-medium question-text">Intelligenz</div>
+              </div>
+              <div id="q12_a1" class="question-element question-answer" onclick="selectAnswer(this)">
+                <div class="oswald-medium question-text">Sozialkompetenz</div>
+              </div>
+              <div id="q12_a2" class="question-element question-answer" onclick="selectAnswer(this)">
+                <div class="oswald-medium question-text">Leistung</div>
+              </div>
+              <div id="q12_a3" class="question-element question-answer" onclick="selectAnswer(this)">
+                <div class="oswald-medium question-text">ADHS</div>
+              </div>
+            </div>
+          </div>
+
+          <!--Question 13 / orginal Question 15/Answer box-->
+          <div id="q13" class="question-container hidden">
+            <div class="oswald-medium question-text question-index">
+              Frage 14:
+            </div>
+            <div class="question-element question-heading">
+              <div class="oswald-medium question-text center-text">
+                Wie und wo könnte der Einsatz von KI im pädagogischen 
+                Alltag problematisch sein?
+              </div>
+            </div>
+            <div class="text-answer-container">
+              <textarea 
+                name="q13-text-field" 
+                id="q13_a" 
+                class="oswald-medium question-text text-answer question-answer" 
+                placeholder="Schreibe deine Antwort..." 
+                maxlength="500" 
+                oninput="updateTextBox(this)"
+              ></textarea>
+            </div>
+          </div>
+
+          <!--Question 14 / orginal Question 12 / Answer box-->
+          <div id="q14" class="question-container hidden">
+            <div class="oswald-medium question-text question-index">
+              Frage 15:
+            </div>
+            <div class="question-element question-heading">
+              <div class="oswald-medium question-text center-text">
+                Was wünsche / erhoffe ich mir persönlich von zukünftigen 
+                KI-Technologien?
+              </div>
+            </div>
+            <div class="text-answer-container">
+              <textarea 
+                name="q14-text-field" 
+                id="q14_a" 
+                class="oswald-medium question-text text-answer question-answer" 
+                placeholder="Schreibe deine Antwort..." 
+                maxlength="500" 
+                oninput="updateTextBox(this)"
+              ></textarea>
+            </div>
+          </div>
+
+
+
+          <!-- ################### RESULT SCREEN ################### -->
+
+
+          <!--Result screen-->
+          <div id="result" class="result-container hidden">
+            <div class="start-container">
+              <div class="oswald-medium title-text" style="font-size: 50pt;">Selbstcheck KI  erfolgreich Abgeschlossen!</div>
+              <div class="result-text-box download-pdf-hitbox" onclick="exportPDF(questionAnswers)">
+                <div>
+                  <div class="oswald-medium question-text pdf-download-text">PDF mit Ergebnissen herunterladen:</div>
+                </div>
+                <div id="pdf_button" class="navigation-button button-active" style="width: 100px; height: 100px;">
+                  <img src="images/Download_pdf.svg" alt="export-pdf-icon">
+                </div>
+              </div>
+            </div>
+
+            <div class="result-image-container">
+              <img class="result-image" src="images/result_screen_illustration.png" alt="">
+            </div>
+
+            <div class="result-text-box">
+              <div class="oswald-medium question-text pdf-download-text">Selbstcheck wiederholen</div>
+              <div id="restart_button" class="navigation-button button-active" onclick="restartQuestionnaire()">
+                <img src="images/Reset.svg" alt="reload-icon">
+              </div>
+            </div>
+          </div>
+
+          <!--Impressum screen-->
+          <div id="impressum" class="impressum-container hidden">
+            <div class="impressum-header">
+              <div class="result-type-heading">
+                <div class="oswald-medium">Impressum</div>
+              </div>
+              
+              <img class="cross-icon" src="images/exit_cross.svg" alt="exit_cross" onclick="exitImpressum()">
+            </div>
+            <div class="oswald-medium question-text">
+              <div class="large-line-height">
+                Konzeption: BLM Stiftung Medienpädagogik Bayern und mecodia Software & Consulting und Bildungs-Agentur
+              </div>
+              <div class="large-line-height">
+                Redaktion: Jutta Schirmacher, Lina Renken und Franziska Hein (BLM Stiftung Medienpädagogik Bayern)<br>
+                Grafiken: Enrico Pallazzo - Gesellschaft für gute Unterhaltung GmbH
+              </div>
+              <div class="large-line-height">
+                Programmierung und grafische Gestaltung: Fish Blowing Bubbles GmbH
+              </div>
+              <div class="large-line-height">
+                Das digitale Element „Selbstcheck KI“ ist Teil des Moduls „KI im pädagogischen Alltag“
+                des Medienführerscheins Bayern für die Fachakademien für Sozialpädagogik (FAKS).
+              </div>
+              <div class="large-line-height">
+                Entwicklung und Gestaltung der Materialien gefördert durch die Bayerische Staatskanzlei.
+              </div>
+              <div class="large-line-height">
+                München, August 2024
+              </div>
+              <div class="large-line-height">
+                Copyright: BLM Stiftung Medienpädagogik Bayern 2024
+              </div>
+              <div class="large-line-height">
+                Alle Rechte vorbehalten
+              </div>
+            </div>
+          </div>
+
+          <!--Sources screen-->
+          <div id="sources" class="impressum-container hidden">
+            <div class="impressum-header">
+              <div class="result-type-heading">
+                <div class="oswald-medium">Quellen</div>
+              </div>
+              
+              <img class="cross-icon" src="images/exit_cross.svg" alt="exit_cross" onclick="exitImpressum()">
+            </div>
+
+            <div class="sources-entry">
+              <div class="oswald-medium question-text" style="margin-right: 15px;">[1]</div>
+              <div class="oswald-medium question-text">
+                Deutsches Schulportal, "Abitur 2024 - Prüfungen, News und Notenschnitte", Zuletzt bearbeitet am 23.07.2024, 
+                <a href="https://deutsches-schulportal.de/bildungswesen/abitur-pruefungen-news-notenschnitte/" target="_blank">https://deutsches-schulportal.de/bildungswesen/abitur-pruefungen-news-notenschnitte/</a>
+              </div>
+            </div>
+
+            <div class="sources-entry">
+              <div class="oswald-medium question-text" style="margin-right: 15px;">[2]</div>
+              <div class="oswald-medium question-text">
+                News4Teachers, "Forscher registrieren rasante Entwicklung: ChatGPT besteht das bayerische Abitur - mit einer Zwei", Veröffentlicht am 25.11.2023, 
+                <a href="https://www.news4teachers.de/2023/11/forscher-registrieren-rasante-entwicklung-chatgpt-besteht-das-bayerische-abitur-mit-einer-zwei/" target="_blank">https://www.news4teachers.de/2023/11/<wbr>forscher-registrieren-rasante-entwicklung-chatgpt-besteht-das-bayerische-abitur-mit-einer-zwei/</a>
+              </div>
+            </div>
+
+            <div class="sources-entry">
+              <div class="oswald-medium question-text" style="margin-right: 15px;">[3]</div>
+              <div class="oswald-medium question-text">
+                Onlim, "Die Geschichte und Entwicklung von Chatbots - von Eliza bis ChatGPT", Veröffentlicht am 15.03.2022, 
+                <a href="https://onlim.com/die-geschichte-und-entwicklung-von-chatbots/" target="_blank">https://onlim.com/die-geschichte-und-entwicklung-von-chatbots/</a>
+              </div>
+            </div>
+
+            <div class="sources-entry">
+              <div class="oswald-medium question-text" style="margin-right: 15px;">[4]</div>
+              <div class="oswald-medium question-text">
+                Soxes, "Beispiele für künstliche Intelligenz", Zuletzt bearbeitet am 31.07.2024, 
+                <a href="https://soxes.ch/kuenstliche-intelligenz-beispiele/" target="_blank">https://soxes.ch/kuenstliche-intelligenz-beispiele/</a>
+              </div>
+            </div>
+
+            <div class="sources-entry">
+              <div class="oswald-medium question-text" style="margin-right: 15px;">[5]</div>
+              <div class="oswald-medium question-text">
+                ZVKI (Zentrum für vertrauenswürdige Künstliche Intelligenz), "Kreativität", Zuletzt bearbeitet am 01.08.2024, 
+                <a href="https://www.zvki.de/" target="_blank">https://www.zvki.de/</a>
+              </div>
+            </div>
+
+            <div class="sources-entry">
+              <div class="oswald-medium question-text" style="margin-right: 15px;">[6]</div>
+              <div class="oswald-medium question-text">
+                ZVKI (Zentrum für vertrauenswürdige Künstliche Intelligenz), "Turing-Test, Glossar", Veröffentlicht am 26.04.2022, 
+                <a href="https://www.zvki.de/en/ki-navigator/unsere-inhalte/glossar" target="_blank">https://www.zvki.de/en/ki-navigator/unsere-inhalte/glossar</a>
+              </div>
+            </div>
+
+          </div>
+
+
+
+          <!-- ################### NAVIGATION ################### -->
+
+
+          <!--Questions navigation section-->
+          <div id="navigation" class="navigation-container hidden">
+            <div id="prev_button" class="navigation-button button-locked" onclick="previousQuestion()">
+              <img src="images/Arrow_lightblue.svg" alt="arrow-icon" style="transform: rotate(270deg);">
+            </div>
+            <div id="next_button" class="navigation-button button-locked" onclick="nextQuestion()">
+              <img src="images/Arrow_lightblue.svg" alt="arrow-icon" style="transform: rotate(90deg);">
+            </div>
+          </div>
+
+
+
+          <!-- ################### FOOTER ################### -->
+
+  
+          <!--Footer-->
+          <div id="footer" class="footer-breakpoint-fix">
+            <div class="footer-container">
+              <div id="footer_1" class="footer-logo">
+                <a href="https://www.km.bayern.de/digitale-schule-der-zukunft/allgemein" target="_blank">
+                  <img class="company-image" src="images/digitale_schule_logo.png" alt="">
+                </a>
+              </div>
+              <div id="footer_2" class="footer-button" onclick="impressum()">
+                <div class="oswald-medium footer-button-text">Impressum</div>
+                <div class="text-underline" style="width: 85px;"></div>
+              </div>
+              <div id="footer_3" class="footer-button" onclick="sources()">
+                <div class="oswald-medium footer-button-text">Quellen</div>
+                <div class="text-underline" style="width: 55px;"></div>
+              </div>
+              <a id="footer_4" href="https://www.medienfuehrerschein.bayern/datenschutz" style="text-decoration: none;" target="_blank">
+                <div class="footer-button">
+                  <div class="oswald-medium footer-button-text">Datenschutz</div>
+                  <div class="text-underline" style="width: 95px;"></div>
+                </div>
+              </a>
+              <div id="footer_5" class="footer-logo">
+                <a href="https://www.stiftung-medienpaedagogik-bayern.de/" target="_blank">
+                  <img class="company-image" src="images/BLMStiftungMedienpaed-LogoRGB.png" alt="">
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div id="pop_ups">
+
+      <div id="q1_pop_up" class="pop-up no-blur hidden">
+        <div class="pop-up-container">
+          <img class="info-icon" src="images/Infoicon.svg" alt="info icon">
+
+          <div class="oswald-medium small-heading">Richtige Antwort:</div>
+          <div class="oswald-medium question-text" style="margin-bottom: 20px;">alle Optionen!</div>
+          <div class="oswald-medium small-heading">Erklärung:</div>
+          <div class="oswald-medium question-text">
+            KI begegnet uns mittlerweile beinahe überall. Dabei sind Suchmaschinen,
+            Fahr- und Sprachassistenz die wohl bekanntesten Einsatzorte für KI-Comfort
+            im Alltag. Doch auch in der Lebensmittelherstellung kommt KI zum Einsatz,
+            z. B. um fehlerhafte Produkte zu erkennen und auszusortieren.<sup class="footnote" onclick="sources()">4</sup>
+          </div>
+          <div class="text-button-container">
+            <div class="text-button" onclick="nextQuestion(true)">
+              <div class="oswald-medium text-button-text">Weiter</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div id="q3_pop_up" class="pop-up no-blur hidden">
+        <div class="pop-up-container">
+          <img class="info-icon" src="images/Infoicon.svg" alt="info icon">
+
+          <div class="oswald-medium small-heading">Richtige Antwort:</div>
+          <div class="oswald-medium question-text" style="margin-bottom: 20px;">Nein</div>
+          <div class="oswald-medium small-heading">Erklärung:</div>
+          <div class="oswald-medium question-text">
+            Gewisse Eigenschaften werden KI-Technologien nie wirklich kopieren können.
+            Kreativität, Liebe, Intuition, Empathie – das sind Eigenschaften, die uns 
+            Menschen immer von KIs unterscheiden werden.<sup class="footnote" onclick="sources()">5</sup>
+          </div>
+          <div class="text-button-container">
+            <div class="text-button" onclick="nextQuestion(true)">
+              <div class="oswald-medium text-button-text">Weiter</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="q6_pop_up" class="pop-up no-blur hidden">
+        <div class="pop-up-container">
+          <img class="info-icon" src="images/Infoicon.svg" alt="info icon">
+
+          <div class="oswald-medium small-heading">Richtige Antwort:</div>
+          <div class="oswald-medium question-text" style="margin-bottom: 20px;">1960er Jahre</div>
+          <div class="oswald-medium small-heading">Erklärung:</div>
+          <div class="oswald-medium question-text">
+            Das erste interaktive, sprachbasierte Computerprogramm oder Chat-Bot wurde
+            1966 am Massachusetts Institute of Technology (MIT) entwickelt. Das Programm 
+            hieß Eliza, konnte einfache Fragen beantworten und bildete eine essenzielle 
+            Grundlage für natürliche Sprachverarbeitung, programmierte Sprachmodelle und KI.<sup class="footnote" onclick="sources()">3</sup>
+          </div>
+          <div class="text-button-container">
+            <div class="text-button" onclick="nextQuestion(true)">
+              <div class="oswald-medium text-button-text">Weiter</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="q9_pop_up" class="pop-up no-blur hidden">
+        <div class="pop-up-container">
+          <img class="info-icon" src="images/Infoicon.svg" alt="info icon">
+
+          <div class="oswald-medium small-heading">Richtige Antwort:</div>
+          <div class="oswald-medium question-text" style="margin-bottom: 20px;">Ja<sup class="footnote" onclick="sources()">2</sup></div>
+          <div class="oswald-medium small-heading">Erklärung:</div>
+          <div class="oswald-medium question-text">
+            Mit einer glatten Zwei hätte eines der meistgenutzten KI-basierten Sprachmodelle
+            im November 2023 das bayerische Abitur bestanden. Damit schnitt es um 0,24 Noten 
+            besser ab als der bayerische Abitur-Durchschnitt im selben Jahr<sup class="footnote" onclick="sources()">1</sup>.
+          </div>
+          <div class="text-button-container">
+            <div class="text-button" onclick="nextQuestion(true)">
+              <div class="oswald-medium text-button-text">Weiter</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="q12_pop_up" class="pop-up no-blur hidden">
+        <div class="pop-up-container">
+          <img class="info-icon" src="images/Infoicon.svg" alt="info icon">
+
+          <div class="oswald-medium small-heading">Richtige Antwort:</div>
+          <div class="oswald-medium question-text" style="margin-bottom: 20px;">Intelligenz</div>
+          <div class="oswald-medium small-heading">Erklärung:</div>
+          <div class="oswald-medium question-text">
+            Tatsächlich ist der Turing-Test ein Intelligenztest. Allerdings ermittelt er 
+            keinen menschlichen Intelligenzquotienten, sondern programmierte Intelligenz.
+            Ganz konkret misst er die Fähigkeit von Programmen, zwischen menschlichen und
+            softwarebasierten Spracheingaben zu unterscheiden. Der Turing-Test gilt 
+            mittlerweile allerdings als überholt.<sup class="footnote" onclick="sources()">6</sup>
+          </div>
+          <div class="text-button-container">
+            <div class="text-button" onclick="nextQuestion(true)">
+              <div class="oswald-medium text-button-text">Weiter</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </body>
+</html>
